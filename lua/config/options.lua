@@ -3,3 +3,4 @@
 -- Add any additional options here
 -- -- then you need to set the option below.
 vim.g.lazyvim_picker = "telescope"
+vim.opt.clipboard = "unnamedplus"
