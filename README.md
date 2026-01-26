@@ -12,3 +12,5 @@ And install `eza`
 brew install xclip
 brew install eza (better to do it through apt get)
 ```
+
+this might be important https://github.com/pnpm/pnpm/issues/4549, then go to the the manual installation of gentleman.docs
