@@ -15,7 +15,7 @@ return {
             dismiss = "<C-]>",
           },
         },
-        panel = { enabled = false },
+        panel = { enabled = true },
       })
     end,
   },
