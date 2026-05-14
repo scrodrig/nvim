@@ -6,3 +6,4 @@ vim.opt.swapfile = false
 vim.lsp.inlay_hint.enable(false)
 vim.opt.title = true
 vim.opt.titlestring = "%{fnamemodify(getcwd(), ':t')}"
+vim.opt.undofile = false
