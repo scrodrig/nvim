@@ -7,3 +7,8 @@
 vim.keymap.set("n", "<leader>sb", function()
   Snacks.picker.lines({ layout = { preset = "telescope", reverse = false } })
 end, { desc = "Buffer Lines" })
+
+-- Navigate to preview window from keyboard (when preview is open)
+vim.keymap.set("n", "<M-o>", function()
+  vim.cmd("wincmd w")
+end, { desc = "Jump to next window" })

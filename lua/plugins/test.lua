@@ -1,54 +1,53 @@
 return {
-  "nvim-neotest/neotest",
-  dependencies = {
-    "marilari88/neotest-vitest",
-    "nvim-neotest/neotest-jest",
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-neotest/neotest-vitest",
+      "nvim-neotest/neotest-jest",
+    },
+    config = function()
+      local cwd = vim.fn.getcwd() -- Cachear el cwd al inicio
+
+      require("neotest").setup({
+        adapters = {
+          require("neotest-vitest")({
+            is_test_file = function(file_path)
+              return string.match(file_path, "/packages/")
+                and (string.match(file_path, "%.spec%.") or string.match(file_path, "%.test%."))
+            end,
+          }),
+          require("neotest-jest")({
+            jestCommand = "npx jest --runInBand",
+            is_test_file = function(file_path)
+              if string.match(file_path, "/packages/") then
+                return false
+              end
+              return string.match(file_path, "%.spec%.") or string.match(file_path, "%.test%.")
+            end,
+            jestConfigFile = function(file)
+              if string.match(file, "/apps/wealth%-planning%-api/") then
+                return cwd .. "/apps/wealth-planning-api/jest.config.cjs"
+              end
+              local root_jest = cwd .. "/jest.config.js"
+              if vim.loop.fs_stat(root_jest) then
+                return root_jest
+              end
+              return nil
+            end,
+            cwd = function(file)
+              if string.match(file, "/apps/wealth%-planning%-api/") then
+                return cwd .. "/apps/wealth-planning-api"
+              end
+              return cwd
+            end,
+            env = { CI = true },
+          }),
+        },
+      })
+    end,
   },
-  config = function()
-    ---@diagnostic disable-next-line: missing-fields
-    require("neotest").setup({
-      adapters = {
-        require("neotest-jest")({
-          jestCommand = "npm test --",
-          jestArguments = function(defaultArguments, context)
-            return defaultArguments
-          end,
-          jest_test_discovery = false,
-          cwd = function(path)
-            return vim.fn.getcwd()
-          end,
-          isTestFile = require("neotest-jest.jest-util").defaultIsTestFile,
-        }),
-        require("neotest-vitest"),
-      },
-    })
-  end,
 }
--- return {
---   "nvim-neotest/neotest",
---   dependencies = {
---     "nvim-neotest/neotest-jest",
---     "marilari88/neotest-vitest",
---   },
---   config = function()
---     local neotest = require("neotest")
---
---     neotest.setup({
---       adapters = {
---         require("neotest-jest")({
---           jestCommand = "npx jest --",
---           jest_test_discovery = true,
---           env = { CI = true },
---           cwd = function(path)
---             return vim.fn.getcwd()
---           end,
---         }),
---
---         -- Vitest solo si realmente lo necesitás
---         require("neotest-vitest")({
---           vitestCommand = "npx vitest",
---         }),
---       },
---     })
---   end,
--- }
