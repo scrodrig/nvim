@@ -6,7 +6,7 @@ return {
       "nvim-neotest/nvim-nio",
       "nvim-lua/plenary.nvim",
       "antoinemadec/FixCursorHold.nvim",
-      "nvim-neotest/neotest-vitest",
+      "marilari88/neotest-vitest",
       "nvim-neotest/neotest-jest",
     },
     config = function()
